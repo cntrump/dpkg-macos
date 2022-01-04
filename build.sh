@@ -2,9 +2,9 @@
 
 set -e
 
-PREFIX=${INSTALL_PREFIX}
-if [ "${PREFIX}" = "" ]; then
-  PREFIX=/usr/local
+install_prefix=${INSTALL_PREFIX}
+if [ "${install_prefix}" = "" ]; then
+  install_prefix=/usr/local
 fi
 
 export PATH=$install_prefix/bin:$PATH
@@ -21,8 +21,11 @@ popd
 
 clone https://git.dpkg.org/git/dpkg/dpkg.git dpkg
 
+export LIBTOOLIZE=glibtoolize
+
 pushd dpkg
-./configure --prefix=${PREFIX} \
+./autogen
+./configure --prefix=${install_prefix} \
             --disable-dselect \
             --disable-start-stop-daemon \
             PERL_LIBDIR=${LIBRARYPERL} \
